@@ -1,26 +1,28 @@
+from flask import redirect, abort
 from . import app
-from flask import redirect
 from . import forms
+from . import persistence
 
 
 @app.route('/', methods=('POST', 'GET'))
 def hello_world():
     form = forms.CheckIn()
     if form.validate_on_submit():
-        form.id
-        return redirect('confirm')
-    else:
-        return redirect('deny')
+        participant = persistence.getParticipant(form.id)
+        if participant:
+            participant.check_in()
+
+            if persistence.updateParticipant(participant):
+                return redirect('/confirm')
+            else:
+                abort(500)
+        else:
+            return redirect('/deny')
 
 
-@app.route('/confirm')
-def confirm_get():
+@app.route('/confirm', methods=('GET', 'POST'))
+def confirm():
     return 'Confirm'
-
-
-@app.route('/confirm', methods=['POST'])
-def confirm_post():
-    pass
 
 
 @app.route('/deny')
@@ -28,41 +30,27 @@ def deny():
     return 'deny'
 
 
-@app.route('/admin')
-def admin_get():
+@app.route('/admin', methods=('GET', 'POST'))
+def admin():
     return 'admin'
 
 
-@app.route('/admin', methods=['POST'])
-def admin_post():
-    pass
-
-
-@app.route('/login')
-def login_get():
+@app.route('/admin/login', methods=('GET', 'POST'))
+def login():
     return 'login'
 
 
-@app.route('/login', methods=['POST'])
-def login_post():
-    pass
-
-
-@app.route('/logout', methods=['POST'])
+@app.route('/admin/logout', methods=['POST'])
 def logout():
-    pass
+    # TODO: actually do this
+    redirect('/')
 
 
-@app.route('/add_client')
-def add_client_get():
+@app.route('/admin/import', methods=('GET', 'POST'))
+def import_participants():
     return 'add client'
 
 
-@app.route('/add_client', methods=['POST'])
-def add_client_post():
-    pass
-
-
-@app.route('/assign_bed', methods=['POST'])
-def assign_bed():
+@app.route('/admin/assign_bed/<hmis_id>', methods=['POST'])
+def assign_bed(hmis_id):
     pass

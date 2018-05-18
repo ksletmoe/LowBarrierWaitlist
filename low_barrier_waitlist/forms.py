@@ -6,3 +6,7 @@ from wtforms.validators import Length
 class CheckIn(FlaskForm):
     name = StringField('hmis', validators=[Length(
         min=4, max=10, message='ID must be between 4 and 10')])
+
+
+class AdminLoginForm(FlaskForm):
+    pass
