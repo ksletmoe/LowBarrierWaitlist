@@ -13,7 +13,7 @@
     <p>
         {{ form.hmis.label }}
         {{ form.hmis(size=20) }}
-        {% for error in form.id.errors %}
+        {% for error in form.hmis.errors %}
            <span style="color: red;">{{ error }}</span>
         {% endfor %}
     </p>
