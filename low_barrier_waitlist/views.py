@@ -9,11 +9,12 @@ from . import mongo
 def root():
     form = forms.CheckIn()
     if form.validate_on_submit():
-        participant = persistence.get_participant(mongo.db, form.hmis)
+        participant = persistence.get_participant(mongo.db, form.hmis.data)
+        print(participant.dump())
         if participant:
             participant.check_in()
 
-            if persistence.update_participant(mongo.db, participant):
+            if persistence.update_participant(mongo.db, participant, persistence.get_checkin_attributes()):
                 return flask.redirect('/confirm')
             else:
                 flask.abort(500)
