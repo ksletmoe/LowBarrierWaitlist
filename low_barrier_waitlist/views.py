@@ -6,7 +6,7 @@ from . import mongo
 
 
 @app.route('/', methods=('POST', 'GET'))
-def hello_world():
+def root():
     form = forms.CheckIn()
     if form.validate_on_submit():
         participant = persistence.get_participant(mongo.db, form.hmis)
