@@ -25,8 +25,8 @@ class Participant(Model):
                  disability_status,
                  veteran,
                  gender,
-                 checkin_datetime,
-                 assigned_bed):
+                 checkin_datetime=None,
+                 assigned_bed=False):
         attributes = {
             'hmis': hmis,
             'age': age,
@@ -44,7 +44,7 @@ class Participant(Model):
         return cls(**object)
 
     def check_in(self):
-        self.checkin_time = datetime.now(tz=pytz.utc).isoformat()
+        self.attributes['checkin_datetime'] = datetime.now(tz=pytz.utc).isoformat()
 
     def go_to_bed(self):
         self.assigned_bed = True

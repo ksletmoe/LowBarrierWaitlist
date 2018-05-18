@@ -16,6 +16,7 @@ def get_assign_bed_attributes():
 def get_participant(db_client, hmisid):
     record = db_client.users.find_one({'hmis': str(hmisid)})
     if record:
+        record.pop('_id', None)
         return Participant.load(record)
     else:
         return None
@@ -35,12 +36,12 @@ def update_administrator(db_client, administrator):
 
 
 def update_participant(db_client, participant, attr_names=[]):
+    update_attr = participant.attributes
     if attr_names:
-        res = db_client.users.update_one({'hmis': str(participant.hmis)},
-            {'$set': {k: v for k,v in participant.attributes.items() if k in attr_names}},
-            upsert=True)
-    else:
-        res = db_client.users.update_one({'hmis': str(participant.hmis)},
-            {'$set': participant.attributes},
-            upsert=True)
+        update_attr = {k: v for k, v in participant.attributes.items() if k in attr_names}
+    print(update_attr)
+    res = db_client.users.update_one({'hmis': str(participant.hmis)},
+                                     {'$set': update_attr},
+                                     upsert=True)
+    print(res)
     return res.modified_count == 1
