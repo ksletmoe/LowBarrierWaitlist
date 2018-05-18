@@ -5,7 +5,7 @@ from wtforms.validators import Length
 
 
 class CheckIn(FlaskForm):
-    hmis = StringField('HMIS ID', validators=[Length(
+    hmis = StringField('Transition Projects ID', validators=[Length(
         min=4, max=10, message='ID must be between 4 and 10')])
 
 
