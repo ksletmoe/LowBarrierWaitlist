@@ -6,14 +6,14 @@
     .important { color: #336699; }
   </style>
 {% endblock %}
-{% block content %}
+{% block body %}
 <h1>Check in</h1>
 <form method="POST" action="/">
     {{form.csrf_token }}
     <p>
         {{ form.hmis.label }}
         {{ form.hmis(size=20) }}
-        {% for error in form.id.errors %}
+        {% for error in form.hmis.errors %}
            <span style="color: red;">{{ error }}</span>
         {% endfor %}
     </p>
