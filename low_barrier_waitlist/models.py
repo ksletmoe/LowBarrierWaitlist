@@ -46,6 +46,9 @@ class Participant(Model):
     def check_in(self):
         self.checkin_time = datetime.now(tz=pytz.utc).isoformat()
 
+    def go_to_bed(self):
+        self.assigned_bed = True
+
 
 class Administrator(Model):
     def __init__(self, email, password):

@@ -1,4 +1,5 @@
 import flask
+import json
 from . import app
 from . import forms
 from . import persistence
@@ -58,7 +59,16 @@ def import_participants():
 
 @app.route('/admin/assign_bed/<hmis_id>', methods=['POST'])
 def assign_bed(hmis_id):
-    pass
+    participant = persistence.getParticipant(hmis_id)
+    if participant:
+        participant.go_to_bed()
+        if persistence.updateParticipant(participant):
+            return json.dumps({'success':True}), 200, {'Content-Type':'application/json'}
+        else:
+            flask.abort(500)
+    else:
+        flask.abort(400)
+
 
 
 @app.route('/about', methods=['GET'])
