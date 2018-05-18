@@ -22,12 +22,12 @@ class DataImporter:
             'U.S. Military Veteran?':
                 {
                     'field_name': 'is_veteran',
-                    'transform': (lambda x: True if x.strip() in ('YES', 'yes', 'Y', 'y') else False)
+                    'transform': (lambda x: True if x.strip().upper().startswith('Y') else False)
                 },
             'Does the client have a disabling condition?':
                 {
                     'field_name': 'has_disability',
-                    'transform': (lambda x: True if x.strip().startswith in ('YES', 'yes', 'Y', 'y') else False)
+                    'transform': (lambda x: True if x.strip().upper().startswith('Y') else False)
                 },
             'Gender':
                 {

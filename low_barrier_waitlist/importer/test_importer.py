@@ -8,6 +8,7 @@ if __name__ == '__main__':
     importer = DataImporter()
     importer.parse_input_file(sys.argv[1])
     participants = importer.get_participants()
-    print(participants)
+    for p in participants:
+        print(p.dump())
     print(len(participants))
 
