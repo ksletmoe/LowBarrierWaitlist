@@ -1,0 +1,9 @@
+.idea
+
+*.egg-info
+*.pyc
+build
+dist
+.coverage
+.pytest_cache
+
