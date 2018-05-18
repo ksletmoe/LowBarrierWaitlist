@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Administrator{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+{% block body %}
+<div class="row">
+    <div class="col">
+      <h2>Prioritized Participant List</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <table>
+            <tr>
+                <td>
+                    Priority
+                </td>
+                <td>
+                    Vulnerability Score
+                </td>
+                <td>
+                    HMIS ID
+                </td>
+                <td>
+                    Age
+                </td>
+                <td>
+                    Gender
+                </td>
+                <td>
+                    Disabled
+                </td>
+                <td>
+                    Veteran
+                </td>
+            </tr>
+            {% for ranked_participant in ranked_participants %}
+                <tr>
+                    <td>
+                        {{ loop.count }}
+                    </td>
+                    <td>
+                        {{ ranked_participant.rank }}
+                    </td>
+                    <td>
+                        {{ ranked_participant.participant.hmis }}
+                    </td>
+                    <td>
+                        {{ ranked_participant.participant.age }}
+                    </td>
+                    <td>
+                        {{ ranked_participant.participant.gender }}
+                    </td>
+                    <td>
+                        {{ ranked_participant.participant.disability_status }}
+                    </td>
+                    <td>
+                        {{ ranked_participant.participant.veteran }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+

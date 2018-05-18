@@ -11,10 +11,11 @@ def root():
     if form.validate_on_submit():
         participant = persistence.get_participant(mongo.db, form.hmis)
         if participant:
+            participant.assigned_bed = False
             participant.check_in()
 
             if persistence.update_participant(mongo.db, participant):
-                return flask.redirect('/confirm')
+                return flask.redirect('/confirmed/{}'.format(participant.hmis))
             else:
                 flask.abort(500)
         else:
@@ -23,9 +24,9 @@ def root():
     return flask.render_template('index.html', form=form)
 
 
-@app.route('/confirm', methods=('GET', 'POST'))
-def confirm():
-    return 'Confirm'
+@app.route('/confirmed/<hmis_id>')
+def confirm(hmis_id):
+    return flask.render_template('confirmed.html', hmis_id=hmis_id)
 
 
 @app.route('/registration_required')
@@ -33,9 +34,10 @@ def registration_required():
     return flask.render_template('registration_required.html')
 
 
-@app.route('/admin', methods=('GET', 'POST'))
+@app.route('/admin')
 def admin():
-    return 'admin'
+    ranked_participants = []
+    return flask.render_template('admin.html', ranked_participants=ranked_participants)
 
 
 @app.route('/admin/login', methods=('GET', 'POST'))
@@ -58,9 +60,11 @@ def import_participants():
 def assign_bed(hmis_id):
     pass
 
+
 @app.route('/about', methods=['GET'])
 def about_page():
     return flask.render_template('about.html')
+
 
 @app.route('/contact', methods=['GET'])
 def contact_page():
