@@ -8,7 +8,7 @@ class Model:
     def dump(self):
         return json.dumps(self.attributes)
 
-    def __getattribute__(self, name):
+    def __getattr__(self, name):
         return self.attributes.get(name)
 
     def load(self, object):
@@ -21,6 +21,7 @@ class Participant(Model):
                  age,
                  disability_status,
                  veteran,
+                 gender,
                  checkin_datetime,
                  assigned_bed):
         attributes = {
@@ -28,6 +29,7 @@ class Participant(Model):
             'age': age,
             'disability_status': disability_status,
             'veteran': veteran,
+            'gender': gender,
             'checkin_datetime': checkin_datetime,
             'assigned_bed': assigned_bed
         }

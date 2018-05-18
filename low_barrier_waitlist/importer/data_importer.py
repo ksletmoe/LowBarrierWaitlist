@@ -1,5 +1,6 @@
 # Reads a csv file uploaded by TP admins and extracts the participant info
 
+from low_barrier_waitlist.models import Participant
 import csv
 from datetime import datetime, timedelta
 
@@ -54,7 +55,6 @@ class DataImporter:
                     'transform': (lambda x: int(x) if x else 0)
                 }
         }
-        self.export_fields = ['client_id', 'age', 'is_veteran', 'has_disability', 'gender']
 
     def parse_input_file(self, filename):
         with open(filename, 'r', newline='') as csv_file:
@@ -89,4 +89,4 @@ class DataImporter:
             self.participants[event['client_id']] = event
 
     def get_participants(self):
-        return { x: {k: v for k, v in y.items() if k in self.export_fields} for x,y in self.participants.items() }
+        return [Participant(v['client_id'], v['age'], v['has_disability'], v['is_veteran'], v['gender'], None, None) for k, v in self.participants.items()]
