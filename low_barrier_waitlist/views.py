@@ -3,14 +3,13 @@ from . import app
 from . import forms
 from . import persistence
 from . import mongo
-
+from .importer.data_importer import DataImporter
 
 @app.route('/', methods=('POST', 'GET'))
 def root():
     form = forms.CheckIn()
     if form.validate_on_submit():
         participant = persistence.get_participant(mongo.db, form.hmis.data)
-        print(participant.dump())
         if participant:
             participant.assigned_bed = False
             participant.check_in()
@@ -54,7 +53,17 @@ def logout():
 
 @app.route('/admin/import', methods=('GET', 'POST'))
 def import_participants():
-    pass
+    form = forms.Import()
+    if form.validate_on_submit():
+        filename = '../report_upload_example.csv'
+        importer = DataImporter()
+        importer.parse_input_file(filename)
+        participants = importer.get_participants()
+        for p in participants:
+            persistence.update_participant(mongo.db, p, persistence.get_import_attributes())
+
+    return flask.render_template('index.html', form=form)
+
 
 
 @app.route('/admin/assign_bed/<hmis_id>', methods=['POST'])
