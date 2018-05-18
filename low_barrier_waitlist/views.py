@@ -17,7 +17,7 @@ def hello_world():
             else:
                 flask.abort(500)
         else:
-            return flask.redirect('/deny')
+            return flask.redirect('/registration_required')
 
     return flask.render_template('index.html', form=form)
 
@@ -27,9 +27,9 @@ def confirm():
     return 'Confirm'
 
 
-@app.route('/deny')
-def deny():
-    return 'deny'
+@app.route('/registration_required')
+def registration_required():
+    return flask.render_template('registration_required.html')
 
 
 @app.route('/admin', methods=('GET', 'POST'))
