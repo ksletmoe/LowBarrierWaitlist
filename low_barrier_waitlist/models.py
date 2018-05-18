@@ -8,7 +8,7 @@ class Model:
     def dump(self):
         return json.dumps(self.attributes)
 
-    def __getattribute__(self, name):
+    def __getattr__(self, name):
         return self.attributes.get(name)
 
     def load(self, object):
