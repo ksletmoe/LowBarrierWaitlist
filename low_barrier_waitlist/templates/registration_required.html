@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Check In{% endblock %}
+{% block title %}Registration {% endblock %}
 {% block head %}
   {{ super() }}
   <style type="text/css">
@@ -7,8 +7,16 @@
   </style>
 {% endblock %}
 {% block body %}
-<h1>You Need to Register</h1>
-<p>
-  We're sorry, but you need to register to get an HMIS ID.
-</p>
+<hr>
+<div class="row">
+    <div class="col" >
+        <div class="alert alert-danger" role="alert"><h4><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <b>Warning! You Need to Register</b></h4></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+      <p>We're sorry, but you need to register to get an HMIS ID.</p>
+      <p>Contact us at: 555-555-5555</p>
+    </div>
+</div>
 {% endblock %}
