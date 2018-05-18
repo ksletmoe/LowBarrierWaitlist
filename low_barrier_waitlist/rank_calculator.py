@@ -23,7 +23,7 @@ def calc_rank(age, is_veteran=False, has_disability=False):
 
     # is the participant a vet? Apply the vet rr multiple
     if is_veteran:
-        factor *= 1.23
+        factor *= 1.33
 
     # is the participant disabled? Apply the disabled rr multipler
     if has_disability:

@@ -5,14 +5,14 @@ from . import persistence
 
 
 @app.route('/', methods=('POST', 'GET'))
-def hello_world():
+def root():
     form = forms.CheckIn()
     if form.validate_on_submit():
-        participant = persistence.getParticipant(form.hmis)
+        participant = persistence.get_participant(form.hmis)
         if participant:
             participant.check_in()
 
-            if persistence.updateParticipant(participant):
+            if persistence.update_participant(participant):
                 return flask.redirect('/confirm')
             else:
                 flask.abort(500)
