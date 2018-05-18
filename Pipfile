@@ -14,6 +14,7 @@ pytz = "*"
 
 [dev-packages]
 pytest = "*"
+pymongo = "*"
 "e1839a8" = {path = ".", editable = true}
 
 [requires]
