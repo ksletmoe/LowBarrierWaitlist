@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
     # get top 40
     r = Ranker(participants)
-    for rp in r.ranked_participants[:40:]:
+    for rp in r.ranked_participants[:200:]:
         print("ID: {} (Rank: {} [age: {}, vet: {}, dis: {})".format(rp.participant.hmis, rp.rank, rp.participant.age,
                                                               rp.participant.veteran, rp.participant.disability_status))
 
