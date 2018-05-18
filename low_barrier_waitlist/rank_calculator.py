@@ -6,31 +6,28 @@ def calc_rank(age, is_veteran=False, has_disability=False):
 
     Change this function to change the ranking algorithm.
     """
-
-    # base factor is 1.0
+    # This is the base vulnerability score
     factor = 1.0
 
-    # adjust for age based on research
-    if age < 30:
-        factor *= 1
-    elif age < 40:
-        factor *= 1.04
-    elif age < 50:
-        factor *= 1.63
-    elif age < 60:
-        factor *= 2.7
-    elif age < 70:
-        factor *= 4.28
-    else:
-        # any age 70 and up
-        factor *= 11.67
+    age_multiplier = {
+        range(0, 29): 1,
+        range(30, 39): 1.04,
+        range(40, 49): 1.63,
+        range(50, 59): 2.7,
+        range(60, 69): 4.28,
+        range(70, 120): 11.67
+    }
 
+    # find and apply the age rr multiplier
+    factor *= [age_multiplier[key] for key in age_multiplier if age in key][0]
+
+    # is the participant a vet? Apply the vet rr multiple
     if is_veteran:
-        # based on research
-        factor *= 1.33
+        factor *= 1.23
+
+    # is the participant disabled? Apply the disabled rr multipler
     if has_disability:
-        # research not available
         factor *= 1.5
 
-    # result is a number between 1 and about 23
+    # result is a number between 1 and about 22
     return factor
