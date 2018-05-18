@@ -1,4 +1,7 @@
 import json
+from datetime import datetime
+
+import pytz
 
 
 class Model:
@@ -39,6 +42,9 @@ class Participant(Model):
     @classmethod
     def load(cls, object):
         return cls(**object)
+
+    def check_in(self):
+        self.checkin_time = datetime.now(tz=pytz.utc).isoformat()
 
 
 class Administrator(Model):
