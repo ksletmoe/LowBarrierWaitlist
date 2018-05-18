@@ -12,6 +12,7 @@ flask-principal = "*"
 
 [dev-packages]
 pytest = "*"
+pymongo = "*"
 
 [requirements]
 python_version = "3.6"
