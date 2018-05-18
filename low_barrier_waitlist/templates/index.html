@@ -29,7 +29,7 @@
     <div class="row">
         <div class="col">
           {% for error in form.hmis.errors %}
-            <span style="color: red;">{{ error }}</span>
+            <br><span class="alert alert-warning" role="alert" ><b>Warning:</b> {{ error }}</span><br>
           {% endfor %}
         </div>
     </div>         
