@@ -56,3 +56,11 @@ def import_participants():
 @app.route('/admin/assign_bed/<hmis_id>', methods=['POST'])
 def assign_bed(hmis_id):
     pass
+
+@app.route('/about', methods=['GET'])
+def about_page():
+    return flask.render_template('about.html')
+
+@app.route('/contact', methods=['GET'])
+def contact_page():
+    return flask.render_template('contact.html')
