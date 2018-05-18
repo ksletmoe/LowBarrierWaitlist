@@ -21,6 +21,7 @@ class Participant(Model):
                  age,
                  disability_status,
                  veteran,
+                 gender,
                  checkin_datetime,
                  assigned_bed):
         attributes = {
@@ -28,6 +29,7 @@ class Participant(Model):
             'age': age,
             'disability_status': disability_status,
             'veteran': veteran,
+            'gender': gender,
             'checkin_datetime': checkin_datetime,
             'assigned_bed': assigned_bed
         }
