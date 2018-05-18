@@ -1,4 +1,4 @@
-from flask import redirect, abort
+import flask
 from . import app
 from . import forms
 from . import persistence
@@ -8,16 +8,18 @@ from . import persistence
 def hello_world():
     form = forms.CheckIn()
     if form.validate_on_submit():
-        participant = persistence.getParticipant(form.id)
+        participant = persistence.getParticipant(form.hmis)
         if participant:
             participant.check_in()
 
             if persistence.updateParticipant(participant):
-                return redirect('/confirm')
+                return flask.redirect('/confirm')
             else:
-                abort(500)
+                flask.abort(500)
         else:
-            return redirect('/deny')
+            return flask.redirect('/deny')
+
+    return flask.render_template('index.html', form=form)
 
 
 @app.route('/confirm', methods=('GET', 'POST'))
@@ -43,12 +45,12 @@ def login():
 @app.route('/admin/logout', methods=['POST'])
 def logout():
     # TODO: actually do this
-    redirect('/')
+    flask.redirect('/')
 
 
 @app.route('/admin/import', methods=('GET', 'POST'))
 def import_participants():
-    return 'add client'
+    pass
 
 
 @app.route('/admin/assign_bed/<hmis_id>', methods=['POST'])
