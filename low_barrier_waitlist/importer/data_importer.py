@@ -17,7 +17,7 @@ class DataImporter:
             'Age':
                 {
                     'field_name': 'age',
-                    'transform': (lambda x: x)
+                    'transform': (lambda x: int(x))
                 },
             'U.S. Military Veteran?':
                 {
