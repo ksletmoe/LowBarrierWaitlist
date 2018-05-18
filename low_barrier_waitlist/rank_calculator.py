@@ -7,21 +7,30 @@ def calc_rank(age, is_veteran=False, has_disability=False):
     Change this function to change the ranking algorithm.
     """
 
-    age_points = 0
-    # over 55? add more points
-    if age >= 55:
-        age_points += 10
-    # over 65? add even more points (this is cumulative with the above)
-    if age >= 65:
-        age_points += 15
+    # base factor is 1.0
+    factor = 1.0
 
-    vet_points = 10
-    dis_points = 15
+    # adjust for age based on research
+    if age < 30:
+        factor *= 1
+    elif age < 40:
+        factor *= 1.04
+    elif age < 50:
+        factor *= 1.63
+    elif age < 60:
+        factor *= 2.7
+    elif age < 70:
+        factor *= 4.28
+    else:
+        # any age 70 and up
+        factor *= 11.67
 
-    points = age_points
     if is_veteran:
-        points += vet_points
+        # based on research
+        factor *= 1.33
     if has_disability:
-        points += dis_points
+        # research not available
+        factor *= 1.5
 
-    return points
+    # result is a number between 1 and about 23
+    return factor
