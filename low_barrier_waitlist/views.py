@@ -1,9 +1,16 @@
 from . import app
+from flask import redirect
+from . import forms
 
 
-@app.route('/')
+@app.route('/', methods=('POST', 'GET'))
 def hello_world():
-    return 'Hello, World!'
+    form = forms.CheckIn()
+    if form.validate_on_submit():
+        form.id
+        return redirect('confirm')
+    else:
+        return redirect('deny')
 
 
 @app.route('/confirm')
