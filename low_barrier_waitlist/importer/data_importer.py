@@ -4,8 +4,8 @@ from low_barrier_waitlist.models import Participant
 import csv
 from datetime import datetime, timedelta
 
-class DataImporter:
 
+class DataImporter:
     def __init__(self):
         self.participants = dict()
         self.field_mappings = {
@@ -59,26 +59,21 @@ class DataImporter:
     def parse_input_file(self, filename):
         with open(filename, 'r', newline='') as csv_file:
             csv_reader = csv.DictReader(csv_file)
-            #print(csv_reader.fieldnames)
             try:
                 for row in csv_reader:
                     self.process_row(row)
 
-            except csv.Error as e:
-                #TODO convert to log
-                print('Parsing error in file {}, line {}: {}'.format(filename, csv_reader.line_num, e))
+            except csv.Error:
                 return False
         return True
 
-
     def process_row(self, row):
-        #print(row)
         event = dict()
         for csv_field, csv_value in row.items():
             mapping = self.field_mappings.get(csv_field, None)
             if mapping:
                 event[mapping['field_name']] = mapping['transform'](csv_value)
-        #print(event)
+
         event['event_date'] += timedelta(hours=event['event_hour_offset']+event['event_hour'])
         event['event_date'] += timedelta(hours=event['event_minute'])
 
@@ -89,4 +84,13 @@ class DataImporter:
             self.participants[event['client_id']] = event
 
     def get_participants(self):
-        return [Participant(v['client_id'], v['age'], v['has_disability'], v['is_veteran'], v['gender'], None, None) for k, v in self.participants.items()]
+        return [
+            Participant(
+                v['client_id'],
+                v['age'],
+                v['has_disability'],
+                v['is_veteran'],
+                v['gender'],
+                None,
+                None) for k, v in self.participants.items()
+        ]

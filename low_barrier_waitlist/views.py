@@ -6,6 +6,7 @@ from . import persistence
 from . import mongo
 from .importer.data_importer import DataImporter
 
+
 @app.route('/', methods=('POST', 'GET'))
 def root():
     form = forms.CheckIn()
@@ -68,16 +69,15 @@ def import_participants():
 
 @app.route('/admin/assign_bed/<hmis_id>', methods=['POST'])
 def assign_bed(hmis_id):
-    participant = persistence.getParticipant(hmis_id)
+    participant = persistence.get_participant(hmis_id)
     if participant:
         participant.go_to_bed()
-        if persistence.updateParticipant(participant):
-            return json.dumps({'success':True}), 200, {'Content-Type':'application/json'}
+        if persistence.update_participant(mongo.db, participant, ['has_bed']):
+            return json.dumps({'success': True}), 200, {'Content-Type': 'application/json'}
         else:
             flask.abort(500)
     else:
         flask.abort(400)
-
 
 
 @app.route('/about', methods=['GET'])

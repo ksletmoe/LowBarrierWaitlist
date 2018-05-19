@@ -3,6 +3,7 @@ import datetime
 from .ranker import Ranker
 import pymongo
 
+
 def get_import_attributes():
     return ['hmis', 'age', 'disability_status', 'veteran', 'gender']
 
@@ -26,11 +27,10 @@ def get_participant(db_client, hmisid):
 
 def get_recent_participants(db_client, limit=100):
     td = datetime.timedelta(weeks=1)
-    d = datetime.date.today() - td
-    #records = db_client.users.find({"checkin_datetime": {"$gt": d}}) #.sort({"checkin_datetime": -1})
+    one_work_ago = datetime.date.today() - td
     records = db_client.users.find(
         {
-            "checkin_datetime": {"$ne": None},
+            "checkin_datetime": {"$ne": None, "$gt": one_work_ago},
             "assigned_bed": {"$ne": True}
         }
     ).sort("checkin_datetime", pymongo.ASCENDING).limit(limit)
@@ -41,8 +41,8 @@ def get_recent_participants(db_client, limit=100):
         r.pop('_id', None)
         participants.append(Participant.load(r))
     r = Ranker(participants)
-    return r.ranked_participants
 
+    return r.ranked_participants
 
 
 def get_administrator(db_client, email):
@@ -55,7 +55,9 @@ def get_administrator(db_client, email):
 
 def update_administrator(db_client, administrator):
     res = db_client.administrators.update_one({'email': administrator.email},
-                                             {'$set': administrator.dump()})
+                                              {'$set': administrator.dump()})
+
+    return res.modified_count == 1
 
 
 def update_participant(db_client, participant, attr_names=[]):
@@ -66,5 +68,4 @@ def update_participant(db_client, participant, attr_names=[]):
     res = db_client.users.update_one({'hmis': str(participant.hmis)},
                                      {'$set': update_attr},
                                      upsert=True)
-    print(res)
     return res.modified_count == 1
