@@ -44,7 +44,7 @@ class Participant(Model):
         return cls(**object)
 
     def check_in(self):
-        self.attributes['checkin_datetime'] = datetime.now(tz=pytz.utc).isoformat()
+        self.attributes['checkin_datetime'] = datetime.now(tz=pytz.utc)
 
     def go_to_bed(self):
         self.assigned_bed = True

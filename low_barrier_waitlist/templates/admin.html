@@ -20,6 +20,9 @@
                     Priority
                 </td>
                 <td>
+                    Last Check-in
+                </td>
+                <td>
                     Vulnerability Score
                 </td>
                 <td>
@@ -45,6 +48,9 @@
                     </td>
                     <td>
                         {{ ranked_participant.rank }}
+                    </td>
+                    <td>
+                        {{ ranked_participant.participant.checkin_datetime }}
                     </td>
                     <td>
                         {{ ranked_participant.participant.hmis }}

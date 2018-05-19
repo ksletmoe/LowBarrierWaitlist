@@ -1,5 +1,7 @@
 from .models import Participant, Administrator
-
+import datetime
+from .ranker import Ranker
+import pymongo
 
 def get_import_attributes():
     return ['hmis', 'age', 'disability_status', 'veteran', 'gender']
@@ -20,6 +22,22 @@ def get_participant(db_client, hmisid):
         return Participant.load(record)
     else:
         return None
+
+
+def get_recent_participants(db_client, limit=100):
+    td = datetime.timedelta(weeks=1)
+    d = datetime.date.today() - td
+    #records = db_client.users.find({"checkin_datetime": {"$gt": d}}) #.sort({"checkin_datetime": -1})
+    records = db_client.users.find().sort("checkin_datetime", pymongo.ASCENDING).limit(limit)
+
+    participants = []
+    for r in records:
+        print(r)
+        r.pop('_id', None)
+        participants.append(Participant.load(r))
+    r = Ranker(participants)
+    return r.ranked_participants
+
 
 
 def get_administrator(db_client, email):

@@ -37,7 +37,7 @@ def registration_required():
 
 @app.route('/admin')
 def admin():
-    ranked_participants = []
+    ranked_participants = persistence.get_recent_participants(mongo.db)
     return flask.render_template('admin.html', ranked_participants=ranked_participants)
 
 
