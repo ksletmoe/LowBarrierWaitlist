@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Import Successful{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+{% block body %}
+<div class="row">
+    <div class="col">
+      <h2>Import Successful</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>Successfully imported {{ participant_count }} participants.</p>
+    </div>
+</div>
+{% endblock %}
+
+
