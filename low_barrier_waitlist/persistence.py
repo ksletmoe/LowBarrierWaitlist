@@ -28,7 +28,12 @@ def get_recent_participants(db_client, limit=100):
     td = datetime.timedelta(weeks=1)
     d = datetime.date.today() - td
     #records = db_client.users.find({"checkin_datetime": {"$gt": d}}) #.sort({"checkin_datetime": -1})
-    records = db_client.users.find().sort("checkin_datetime", pymongo.ASCENDING).limit(limit)
+    records = db_client.users.find(
+        {
+            "checkin_datetime": {"$ne": None},
+            "assigned_bed": {"$ne": True}
+        }
+    ).sort("checkin_datetime", pymongo.ASCENDING).limit(limit)
 
     participants = []
     for r in records:

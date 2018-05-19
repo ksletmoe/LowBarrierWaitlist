@@ -20,10 +20,10 @@
                     Priority
                 </td>
                 <td>
-                    Last Check-in
+                    Vulnerability Score
                 </td>
                 <td>
-                    Vulnerability Score
+                    Last Check-in
                 </td>
                 <td>
                     HMIS ID
@@ -44,7 +44,7 @@
             {% for ranked_participant in ranked_participants %}
                 <tr>
                     <td>
-                        {{ loop.count }}
+                        {{ loop.index }}
                     </td>
                     <td>
                         {{ ranked_participant.rank }}

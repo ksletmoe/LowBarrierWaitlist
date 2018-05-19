@@ -62,8 +62,8 @@ def import_participants():
         participants = importer.get_participants()
         for p in participants:
             persistence.update_participant(mongo.db, p, persistence.get_import_attributes())
-        return flask.render_template('/admin/import_success.html', len(participants))
-    return flask.render_template('/admin', form=form)
+        return flask.render_template('/import_success.html', participants=len(participants))
+    return flask.render_template('/admin_import.html', form=form)
 
 
 @app.route('/admin/assign_bed/<hmis_id>', methods=['POST'])
