@@ -19,7 +19,6 @@ def calc_rank(age, is_veteran=False, has_disability=False):
     }
 
     # find and apply the age rr multiplier
-    print(age)
     factor *= [age_multiplier[key] for key in age_multiplier if age in key][0]
 
     # is the participant a vet? Apply the vet rr multiple
