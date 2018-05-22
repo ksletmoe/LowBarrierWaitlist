@@ -5,7 +5,14 @@ def calc_rank(age, is_veteran=False, has_disability=False):
     (i.e., Reverse this when sorting.)
 
     Change this function to change the ranking algorithm.
-    """
+    
+    The code in the comments below is a ranking system based on mortality vulerability, as described in several research papers namely:
+    http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0073979
+    http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0073979
+    
+    This code cannot currently be used to to a JOHS agreement regarding this ranking system but should be argued for in the future as it
+    has a scientific basis.
+    
     # This is the base vulnerability score
     factor = 1.0
 
@@ -31,3 +38,21 @@ def calc_rank(age, is_veteran=False, has_disability=False):
 
     # result is a number between 1 and about 22
     return factor
+    """
+    
+    age_points = 0
+    # over 55? add more points
+    if age >= 55:
+        age_points += 1
+
+    vet_points = 1
+    dis_points = 1
+
+    points = age_points
+    if is_veteran:
+        points += vet_points
+    if has_disability:
+        points += dis_points
+
+    # result is a number between 0 and 3
+    return points
