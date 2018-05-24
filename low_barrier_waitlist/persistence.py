@@ -27,10 +27,13 @@ def get_participant(db_client, hmisid):
 
 def get_recent_participants(db_client, limit=100):
     td = datetime.timedelta(weeks=1)
-    one_work_ago = datetime.date.today() - td
+    one_week_ago = datetime.date.today() - td
+    min_checkin_time = datetime.datetime.combine(
+                one_week_ago,
+                datetime.datetime.min.time())
     records = db_client.users.find(
         {
-            "checkin_datetime": {"$ne": None, "$gt": one_work_ago},
+            "checkin_datetime": {"$ne": None, "$gt": min_checkin_time},
             "assigned_bed": {"$ne": True}
         }
     ).sort("checkin_datetime", pymongo.ASCENDING).limit(limit)
