@@ -1,4 +1,3 @@
-
 def calc_rank(age, is_veteran=False, has_disability=False):
     """
     Calculate a participant's rank. A higher number is higher ranked (top of the list).
@@ -22,7 +21,7 @@ def calc_rank(age, is_veteran=False, has_disability=False):
         range(40, 50): 1.63,
         range(50, 60): 2.7,
         range(60, 70): 4.28,
-        range(70, 120): 11.67
+        range(70, 120): 11.67,
     }
 
     # find and apply the age rr multiplier

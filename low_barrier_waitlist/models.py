@@ -5,6 +5,7 @@ import pytz
 
 
 class Model:
+
     def __init__(self, attributes):
         self.attributes = attributes
 
@@ -15,26 +16,29 @@ class Model:
         return self.attributes.get(name)
 
     def load(self, object):
-        raise NotImplementedError('Implement in child model')
+        raise NotImplementedError("Implement in child model")
 
 
 class Participant(Model):
-    def __init__(self,
-                 hmis,
-                 age,
-                 disability_status,
-                 veteran,
-                 gender,
-                 checkin_datetime=None,
-                 assigned_bed=False):
+
+    def __init__(
+        self,
+        hmis,
+        age,
+        disability_status,
+        veteran,
+        gender,
+        checkin_datetime=None,
+        assigned_bed=False,
+    ):
         attributes = {
-            'hmis': hmis,
-            'age': age,
-            'disability_status': disability_status,
-            'veteran': veteran,
-            'gender': gender,
-            'checkin_datetime': checkin_datetime,
-            'assigned_bed': assigned_bed
+            "hmis": hmis,
+            "age": age,
+            "disability_status": disability_status,
+            "veteran": veteran,
+            "gender": gender,
+            "checkin_datetime": checkin_datetime,
+            "assigned_bed": assigned_bed,
         }
 
         super().__init__(attributes)
@@ -44,22 +48,18 @@ class Participant(Model):
         return cls(**object)
 
     def check_in(self):
-        self.attributes['checkin_datetime'] = datetime.now(tz=pytz.utc)
+        self.attributes["checkin_datetime"] = datetime.now(tz=pytz.utc)
 
     def go_to_bed(self):
         self.assigned_bed = True
 
 
 class Administrator(Model):
+
     def __init__(self, email, password):
-        attrs = {
-            'email': email,
-            'password': password,
-            'salt': None  # TODO
-        }
+        attrs = {"email": email, "password": password, "salt": None}  # TODO
         super().__init__(attrs)
 
     @classmethod
     def load(cls, attrs):
         return cls(**attrs)
-

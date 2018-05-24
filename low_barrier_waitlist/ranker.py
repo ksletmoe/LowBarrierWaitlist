@@ -7,6 +7,7 @@ class Ranker:
     create with list of Participant records.
     After creating, get ranker.ranked_participants
     """
+
     def __init__(self, participants):
         # convert dicts into Participant objects
         self.ranked_participants = []
@@ -17,6 +18,7 @@ class Ranker:
 
 
 class RankedParticipant:
+
     def __init__(self, participant):
         """
         :param participant: Participant (from models.py)
@@ -24,6 +26,6 @@ class RankedParticipant:
         # see rank_calculator.py for ranking algorithm
         # print(participant.dump())
         self.participant = participant
-        self.rank = calc_rank(participant.age, participant.veteran, participant.disability_status)
-
-
+        self.rank = calc_rank(
+            participant.age, participant.veteran, participant.disability_status
+        )
