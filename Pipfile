@@ -6,16 +6,19 @@ name = "pypi"
 [packages]
 uwsgi = "*"
 flask = "*"
+flask-security = "*"
 flask-login = "*"
 flask-wtf = "*"
 flask-principal = "*"
-flask-pymongo = "*"
+flask-mongoengine = "*"
 pytz = "*"
 werkzeug = "*"
 
 [dev-packages]
 pytest = "*"
-pymongo = "*"
+pytest-cov = "*"
+mongoengine = "*"
+pre-commit = "*"
 "e1839a8" = {path = ".", editable = true}
 
 [requires]
