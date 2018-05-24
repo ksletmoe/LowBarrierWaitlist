@@ -7,6 +7,28 @@
   </style>
 {% endblock %}
 {% block body %}
+  <style type="text/css">
+    table {
+        color: #444;
+        font-family: Helvetica, Arial, sans-serif;
+        width: 640px;
+        border-collapse:
+        collapse; border-spacing: 0;
+    }
+
+    td, th { border: 1px solid #CCC; height: 30px; }
+
+    th {
+        background: #F3F3F3;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    td {
+        background: #FAFAFA;
+        text-align: center;
+    }
+  </style>
 <div class="row">
     <div class="col">
       <h2>Prioritized Participant List</h2>
@@ -16,30 +38,30 @@
     <div class="col">
         <table>
             <tr>
-                <td>
+                <th>
                     Priority
-                </td>
-                <td>
+                </th>
+                <th>
                     Vulnerability Score
-                </td>
-                <td>
+                </th>
+                <th>
                     Last Check-in
-                </td>
-                <td>
+                </th>
+                <th>
                     HMIS ID
-                </td>
-                <td>
+                </th>
+                <th>
                     Age
-                </td>
-                <td>
+                </th>
+                <th>
                     Gender
-                </td>
-                <td>
+                </th>
+                <th>
                     Disabled
-                </td>
-                <td>
+                </th>
+                <th>
                     Veteran
-                </td>
+                </th>
             </tr>
             {% for ranked_participant in ranked_participants %}
                 <tr>
