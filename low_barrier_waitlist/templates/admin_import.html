@@ -7,13 +7,10 @@
   </style>
 {% endblock %}
 {% block body %}
-<div class="row">
-    <div class="col">
-      <h2>Check in</h2>
-    </div>
-</div>
-
-<form method="POST" action="/admin/import" class="form-horizontal">
+<br/>
+<br/>
+<br/>
+<form method="POST" action="/admin/import" class="form-horizontal" enctype="multipart/form-data">
   <div class="form-group form-group-lg">
     {{form.csrf_token }}
     <div class="row">
@@ -39,11 +36,6 @@
         </div>
     </div>  
     <br />
-    <div class="row">
-        <div class="col" >
-            <div class="alert alert-info" role="alert"><h4><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> <b>Transitions Project ID</b></h4><p>If you do not know your Transitions Project ID, please click here: <a href="/contact">contact us</a> so we can assist you futher.</a></p></div>
-        </div>
-    </div>
   </div>
 </form>
 {% endblock %}

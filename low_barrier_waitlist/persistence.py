@@ -64,7 +64,6 @@ def update_participant(db_client, participant, attr_names=[]):
     update_attr = participant.attributes
     if attr_names:
         update_attr = {k: v for k, v in participant.attributes.items() if k in attr_names}
-    print(update_attr)
     res = db_client.users.update_one({'hmis': str(participant.hmis)},
                                      {'$set': update_attr},
                                      upsert=True)

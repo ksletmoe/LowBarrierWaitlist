@@ -5,7 +5,8 @@ from . import forms
 from . import persistence
 from . import mongo
 from .importer.data_importer import DataImporter
-
+import os
+from werkzeug.utils import secure_filename
 
 @app.route('/', methods=('POST', 'GET'))
 def root():
@@ -53,17 +54,28 @@ def logout():
     flask.redirect('/')
 
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+
 @app.route('/admin/import', methods=('GET', 'POST'))
 def import_participants():
     form = forms.Import()
     if form.validate_on_submit():
-        filename = '../report_upload_example.csv'
-        importer = DataImporter()
-        importer.parse_input_file(filename)
-        participants = importer.get_participants()
-        for p in participants:
-            persistence.update_participant(mongo.db, p, persistence.get_import_attributes())
-        return flask.render_template('/import_success.html', participants=len(participants))
+        f = form.participant_list.data
+        if allowed_file(f.filename):
+            filename = secure_filename(f.filename)
+            local_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            f.save(local_path)
+            importer = DataImporter()
+            importer.parse_input_file(local_path)
+            participants = importer.get_participants()
+            for p in participants:
+                persistence.update_participant(mongo.db, p, persistence.get_import_attributes())
+            return flask.render_template('/import_successful.html', participant_count=len(participants))
+        else:
+            flask.abort(422)
     return flask.render_template('/admin_import.html', form=form)
 
 

@@ -11,6 +11,7 @@ flask-wtf = "*"
 flask-principal = "*"
 flask-pymongo = "*"
 pytz = "*"
+werkzeug = "*"
 
 [dev-packages]
 pytest = "*"

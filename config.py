@@ -1,2 +1,5 @@
 DEBUG = True
 SECRET_KEY = 'FOOOOOOOO'
+UPLOAD_FOLDER = '/tmp'
+ALLOWED_EXTENSIONS = set(['csv'])
+
