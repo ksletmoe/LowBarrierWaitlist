@@ -40,7 +40,6 @@ def get_recent_participants(db_client, limit=100):
 
     participants = []
     for r in records:
-        print(r)
         r.pop('_id', None)
         participants.append(Participant.load(r))
     r = Ranker(participants)
