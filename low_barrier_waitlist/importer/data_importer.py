@@ -92,13 +92,11 @@ class DataImporter:
     def get_participants(self):
         return [
             Participant(
-                v["client_id"],
-                v["age"],
-                v["has_disability"],
-                v["is_veteran"],
-                v["gender"],
-                None,
-                None,
+                hmis=v["client_id"],
+                age=v["age"],
+                disability_status=v["has_disability"],
+                veteran=v["is_veteran"],
+                gender=v["gender"],
             )
             for k, v in self.participants.items()
         ]

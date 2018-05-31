@@ -6,6 +6,7 @@ from . import app
 from . import forms
 from .models import Participant
 from .importer.data_importer import DataImporter
+from .ranker import Ranker
 from werkzeug.utils import secure_filename
 
 
@@ -40,9 +41,10 @@ def registration_required():
 
 @app.route("/admin")
 def admin():
-    ranked_participants = persistence.get_recent_participants(mongo.db)
+    # TODO: pagination
+    r = Ranker(Participant.bed_eligable)
     return flask.render_template(
-        "admin.html", ranked_participants=ranked_participants
+        "admin.html", ranked_participants=r.ranked_participants
     )
 
 
@@ -68,19 +70,20 @@ def allowed_file(filename):
 @app.route("/admin/import", methods=("GET", "POST"))
 def import_participants():
     form = forms.Import()
+
     if form.validate_on_submit():
         f = form.participant_list.data
+
         if allowed_file(f.filename):
             filename = secure_filename(f.filename)
             local_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
             f.save(local_path)
+
             importer = DataImporter()
             importer.parse_input_file(local_path)
             participants = importer.get_participants()
             for p in participants:
-                persistence.update_participant(
-                    mongo.db, p, persistence.get_import_attributes()
-                )
+                p.save()
             return flask.render_template(
                 "/import_successful.html", participant_count=len(participants)
             )
