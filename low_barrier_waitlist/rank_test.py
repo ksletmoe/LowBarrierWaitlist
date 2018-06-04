@@ -1,4 +1,5 @@
-from low_barrier_waitlist.ranker import calc_rank
+from .ranker import calc_rank
+
 
 if __name__ == "__main__":
     samples = [

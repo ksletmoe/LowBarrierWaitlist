@@ -1,13 +1,17 @@
 import os
 import json
+import logging
 
 import flask
+from werkzeug.utils import secure_filename
+
 from . import app
 from . import forms
 from .models import Participant
-from .importer.data_importer import DataImporter
+from .participant_importer import import_participants
 from .ranker import Ranker
-from werkzeug.utils import secure_filename
+
+logger = logging.getLogger(__name__)
 
 
 @app.route("/", methods=("POST", "GET"))
@@ -68,8 +72,9 @@ def allowed_file(filename):
 
 
 @app.route("/admin/import", methods=("GET", "POST"))
-def import_participants():
+def admin_import():
     form = forms.Import()
+    errors = []
 
     if form.validate_on_submit():
         f = form.participant_list.data
@@ -79,17 +84,20 @@ def import_participants():
             local_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
             f.save(local_path)
 
-            importer = DataImporter()
-            importer.parse_input_file(local_path)
-            participants = importer.get_participants()
-            for p in participants:
-                p.save()
-            return flask.render_template(
-                "/import_successful.html", participant_count=len(participants)
-            )
+            success, imported_count, errors = import_participants(local_path)
+            if success:
+                return flask.render_template(
+                    "/import_successful.html", participant_count=imported_count
+                )
         else:
             flask.abort(422)
-    return flask.render_template("/admin_import.html", form=form)
+
+    if len(errors) > 0:
+        for error in errors:
+            logger.error(error)
+    return flask.render_template(
+        "/admin_import.html", form=form, import_errors=errors
+    )
 
 
 @app.route("/admin/assign_bed/<hmis_id>", methods=["POST"])

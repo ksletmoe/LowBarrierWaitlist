@@ -6,15 +6,15 @@ from . import db
 
 
 class Participant(db.Document):
-    hmis = db.StringField(min_length=4, max_length=12, unique=True)
+    hmis = db.StringField(unique=True)
     age = db.IntField(required=True)
     disability_status = db.BooleanField(required=True)
     veteran = db.BooleanField(required=True)
-    gender = db.StringField(required=True, choices={"Male", "Female"})
+    gender = db.StringField(required=True)
     checkin_datetime = db.DateTimeField(null=True)
     assigned_bed = db.BooleanField(required=True, default=False)
 
-    meta = {"indexes": ["hmis"]}
+    meta = {"indexes": ["hmis", "-checkin_datetime"]}
 
     def check_in(self):
         self.checkin_datetime = datetime.datetime.now(tz=pytz.utc)

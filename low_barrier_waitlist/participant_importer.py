@@ -1,8 +1,14 @@
 # Reads a csv file uploaded by TP admins and extracts the participant info
-
-from low_barrier_waitlist.models import Participant
+import logging
 import csv
 from datetime import datetime, timedelta
+
+from flask_mongoengine import ValidationError
+
+from .models import Participant
+
+
+logger = logging.getLogger(__name__)
 
 
 class DataImporter:
@@ -90,13 +96,74 @@ class DataImporter:
             self.participants[event["client_id"]] = event
 
     def get_participants(self):
-        return [
-            Participant(
-                hmis=v["client_id"],
-                age=v["age"],
-                disability_status=v["has_disability"],
-                veteran=v["is_veteran"],
-                gender=v["gender"],
+        logger.debug(
+            "Parsed %d lines from the participant file", len(self.participants)
+        )
+        participants = []
+        for _, v in self.participants.items():
+            p = Participant.objects(hmis=v["client_id"]).first()
+            if p:
+                logger.debug(
+                    "Existing participant found with HMIS '%s'. "
+                    "Updating participant.",
+                    p.hmis,
+                )
+                p.age = v["age"]
+                p.disability_status = v["has_disability"]
+                p.veteran = v["is_veteran"]
+                p.gender = v["gender"]
+            else:
+                logger.debug(
+                    "No participant with 'HMIS' %s found; creating a new "
+                    "record.",
+                    v["client_id"],
+                )
+                p = Participant(
+                    hmis=v["client_id"],
+                    age=v["age"],
+                    disability_status=v["has_disability"],
+                    veteran=v["is_veteran"],
+                    gender=v["gender"],
+                )
+
+            participants.append(p)
+
+        return participants
+
+
+def import_participants(participant_file_path):
+    success = True
+    imported_count = 0
+    errors = []
+
+    importer = DataImporter()
+    importer.parse_input_file(participant_file_path)
+    participants = importer.get_participants()
+
+    for p in participants:
+        try:
+            logger.debug(
+                "Saving participant: "
+                "HMIS=%s "
+                "age=%d "
+                "disability_status=%s "
+                "veteran=%s "
+                "gender=%s ",
+                p.hmis,
+                p.age,
+                p.disability_status,
+                p.veteran,
+                p.gender,
             )
-            for k, v in self.participants.items()
-        ]
+            p.save()
+            imported_count += 1
+        except ValidationError as ve:
+            success = False
+            errors.append(
+                "Error importing participant with HMIS '{}': {}".format(
+                    p.hmis, str(ve)
+                )
+            )
+            break
+
+    return success, imported_count, errors

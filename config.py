@@ -2,7 +2,7 @@ import os
 
 SECRET_KEY = "FOOOOOOOO"
 UPLOAD_FOLDER = "/tmp"
-ALLOWED_EXTENSIONS = set(["csv"])
+ALLOWED_EXTENSIONS = {"csv"}
 
 if os.environ.get("TESTING", False):
     DEBUG = True
