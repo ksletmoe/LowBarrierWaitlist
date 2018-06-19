@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .ranker import calc_rank
 
 

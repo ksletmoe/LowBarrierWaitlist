@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from low_barrier_waitlist.rank_calculator import calc_rank
 
 

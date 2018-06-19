@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
 import datetime
 
 import pytz
+from flask_security import RoleMixin, UserMixin
 
 from . import db
+from .utils import one_week_ago
 
 
 class Participant(db.Document):
@@ -26,8 +29,14 @@ class Participant(db.Document):
         )
 
 
-def one_week_ago():
-    td = datetime.timedelta(weeks=1)
-    return datetime.datetime.combine(
-        datetime.date.today() - td, datetime.datetime.min.time()
-    )
+class Role(db.Document, RoleMixin):
+    name = db.StringField(max_length=80, unique=True)
+    description = db.StringField(max_length=255)
+
+
+class User(db.Document, UserMixin):
+    email = db.StringField(max_length=255)
+    password = db.StringField(max_length=255)
+    active = db.BooleanField(default=True)
+    confirmed_at = db.DateTimeField()
+    roles = db.ListField(db.ReferenceField(Role), default=[])

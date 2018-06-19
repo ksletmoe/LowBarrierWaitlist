@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 import os
 import json
 import logging
 
 import flask
 from werkzeug.utils import secure_filename
+from flask_security import login_required
 
 from . import app
 from . import forms
@@ -44,17 +46,13 @@ def registration_required():
 
 
 @app.route("/admin")
+@login_required
 def admin():
     # TODO: pagination
     r = Ranker(Participant.bed_eligable)
     return flask.render_template(
         "admin.html", ranked_participants=r.ranked_participants
     )
-
-
-@app.route("/admin/login", methods=("GET", "POST"))
-def login():
-    return "login"
 
 
 @app.route("/admin/logout", methods=["POST"])
@@ -72,6 +70,7 @@ def allowed_file(filename):
 
 
 @app.route("/admin/import", methods=("GET", "POST"))
+@login_required
 def admin_import():
     form = forms.Import()
     errors = []
@@ -101,6 +100,7 @@ def admin_import():
 
 
 @app.route("/admin/assign_bed/<hmis_id>", methods=["POST"])
+@login_required
 def assign_bed(hmis_id):
     participant = Participant.objects.get_or_404(hmis=hmis_id)
     participant.assigned_bed = True

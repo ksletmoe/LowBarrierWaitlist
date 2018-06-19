@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+
+
 def calc_rank(age, is_veteran=False, has_disability=False):
     """
     Calculate a participant's rank. A higher number is higher ranked (top of the list).
@@ -38,7 +41,7 @@ def calc_rank(age, is_veteran=False, has_disability=False):
     # result is a number between 1 and about 22
     return factor
     """
-    
+
     age_points = 0
     # over 55? add more points
     if age >= 55:

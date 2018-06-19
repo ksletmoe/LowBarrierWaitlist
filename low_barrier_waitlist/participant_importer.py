@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Reads a csv file uploaded by TP admins and extracts the participant info
 import logging
 import csv

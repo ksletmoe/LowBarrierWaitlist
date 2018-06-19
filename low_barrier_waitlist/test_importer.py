@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # from .data_importer import DataImporter
 # from low_barrier_waitlist.ranker import Ranker
 # import low_barrier_waitlist.persistence

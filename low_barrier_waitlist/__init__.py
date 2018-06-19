@@ -1,27 +1,21 @@
-import os
-import sys
-import logging
-
+# -*- coding: utf-8 -*-
 from flask import Flask
 from flask_wtf.csrf import CSRFProtect
 from flask_mongoengine import MongoEngine
+from flask_security import MongoEngineUserDatastore, Security
 
+from .utils import configure_logging
+
+configure_logging()
 
 app = Flask(__name__)
 app.config.from_object("config")
 csrf = CSRFProtect(app)
 db = MongoEngine(app)
 
-flask_env = os.environ.get("FLASK_ENV", None)
-if flask_env and flask_env == "development":
-    log_level = logging.DEBUG
-else:
-    log_level = logging.INFO
+from .models import User, Role
 
-logging.basicConfig(
-    stream=sys.stderr,
-    format="%(asctime)s - %(levelname)s: %(message)s",
-    level=log_level,
-)
+user_datastore = MongoEngineUserDatastore(db, User, Role)
+security = Security(app, user_datastore)
 
 from . import views
